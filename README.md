@@ -4,7 +4,7 @@ FLOP devnet GPU miner'ı kurmak, taşımak ve ayakta tutmak için tek dosyalık 
 
 Elle kurulum 17 adım ve ~43 komut. Bu araçla sunucuya girdikten sonra **3 komut**.
 
-Hazırlayan: [@KriptoliaTR](https://x.com/KriptoliaTR)
+Hazırlayan: [@KriptoliaTR](https://x.com/KriptoliaTR) · [English](README-EN.md)
 
 > **Doğrulama damgası:** 7 Kasım 2026 · worker `0.1.238` · CLI `v0.1.290` · devnet runtime `1014014`
 > Her mod gerçek bir Vast.ai makinesinde (RTX 5060 Ti 16 GB) uçtan uca çalıştırıldı.
@@ -12,7 +12,6 @@ Hazırlayan: [@KriptoliaTR](https://x.com/KriptoliaTR)
 > [resmî dokümanlara](https://docs.flop.network/docs/run-miner) bakın.
 
 ---
-
 ## Ne yapar
 
 | Mod | Ne işe yarar |
@@ -22,41 +21,6 @@ Hazırlayan: [@KriptoliaTR](https://x.com/KriptoliaTR)
 | `restore` | Makineniz öldüyse: aynı 24 kelimeyle yeni makineye taşır. Sponsor adımını **atlar**. |
 | `watch` | Tünel adresi değişirse veya worker ölürse yakalayıp düzeltir. |
 | `status` | Miner hangi aşamada, iş alıyor mu, nöbetçi çalışıyor mu. |
-
-## Kullanım
-
-Sunucuya SSH ile bağlandıktan sonra:
-
-```bash
-curl -fsSLO https://raw.githubusercontent.com/kriptolia/flop-miner-tool/main/flop-miner.sh
-sha256sum flop-miner.sh
-bash flop-miner.sh check
-```
-
-Hash'i aşağıdaki ile karşılaştırın:
-
-```
-0f2fe33f4d8678a89596b1fe9a5d99bd7cbdc59e7cca7c4ee8b31f57827e9ea1
-```
-
-Uygunsa kurun:
-
-```bash
-bash flop-miner.sh install
-```
-
-> `curl | bash` bilerek kullanılmıyor. Kripto tarafında "gördüğün script'i okumadan
-> çalıştır" alışkanlığını yaymak, aynı kitleye seed phrase disiplini anlatmakla çelişir.
-> Üç satır sürüyor ve doğru refleksi öğretiyor.
-
-Kurulum ~25-30 dakika. Ortada bir kez 24 kelimeniz ekrana gelir ve `evet` yazmanız istenir.
-**O kelimeleri kâğıda yazın.** Hiçbir sohbete, mesaja, nota veya yapay zekâya yapıştırmayın.
-
-Kurulum uzun sürdüğü için `screen` içinde çalıştırın; SSH koparsa kurulum devam eder:
-
-```bash
-apt-get install -y screen && screen -S flop
-```
 
 ---
 
@@ -108,6 +72,99 @@ gerekli ve Windows 10/11'de `ssh`, `scp`, `ssh-keygen` yerleşik geliyor. PowerS
 | Anahtarı göster | `cat ~/.ssh/id_ed25519.pub` | `type $env:USERPROFILE\.ssh\id_ed25519.pub` |
 | Dosya kopyala | `scp -P <PORT> ...` | aynı |
 | Bağlan | `ssh -p <PORT> root@<IP>` | aynı |
+
+---
+
+## Makine kiralama ve bağlanma
+
+Hiç sunucu kiralamadıysanız bu bölüm sizi SSH satırına kadar getirir. Daha ayrıntılı,
+ekran görüntülü anlatım için [Ufuk'un rehberi](https://github.com/UfukNode/flop-miner-setup)
+bu işin referans metni.
+
+**1. SSH anahtarı üretin** (kendi bilgisayarınızda, bir kez):
+
+```bash
+ssh-keygen -t ed25519
+```
+
+Dosya adı sorulduğunda **hiçbir şey yazmayın, sadece Enter'a basın.** En sık yapılan hata
+buraya komut veya yol yazmak. Parola sorusunu da boş geçebilirsiniz.
+
+Açık anahtarı ekrana basın:
+
+```bash
+cat ~/.ssh/id_ed25519.pub
+```
+
+`ssh-ed25519 ...` ile başlayan satırın tamamını kopyalayın. Bu satır gizli değildir.
+Yanındaki **uzantısız** `id_ed25519` dosyasını ise kimseyle paylaşmayın.
+
+**2. Vast.ai hesabı açın** ve bakiye yükleyin:
+[cloud.vast.ai](https://cloud.vast.ai/?ref_id=849817)
+
+Sol menüden **Keys** → **SSH Keys** → **+ New** → kopyaladığınız satırı yapıştırın.
+Anahtar, bundan sonra kiraladığınız her sunucuya otomatik eklenir; önce kiralayıp sonra
+eklerseniz o sunucuya işlemez.
+
+Bakiye için: test kurulumu ~0.17 $/saat ve ~30 dakika sürüyor. Ama sponsor kuyruğuna
+takılırsanız makineyi açık bırakmanız gerekir (yukarıdaki 2. maddeye bakın), o yüzden
+**en az 5 $** yükleyin.
+
+**3. Makineyi kiralayın.** Sol menüden **Search**:
+
+- **Change Template** → sağ üstten **VM** etiketi → **Ubuntu 22.04 VM**
+- Filtreler: **On-Demand**, **Any GPU**, **GPU RAM min 16 GB**, **Disk 60 GB**
+- İlanda **Max CUDA** değerinin **13.0 veya üstü** olduğunu doğrulayın
+- Uygun bir makinede **Rent**
+
+**4. Bağlanın.** Sol menüden **Instances**, makine hazır olunca **>_Connect** butonundan
+SSH komutunu kopyalayıp kendi terminalinize yapıştırın:
+
+```bash
+ssh -p <PORT> root@<IP>
+```
+
+Sondaki `-L 8080:localhost:8080` kısmına gerek yok, silebilirsiniz. İlk bağlantıda
+sorulan `Are you sure you want to continue connecting?` sorusuna `yes` yazın.
+
+Buradan sonrası sunucuda çalışıyor.
+
+---
+
+## Kullanım
+
+Sunucuya SSH ile bağlandıktan sonra:
+
+```bash
+curl -fsSLO https://raw.githubusercontent.com/kriptolia/flop-miner-tool/main/flop-miner.sh
+sha256sum flop-miner.sh
+bash flop-miner.sh check
+```
+
+Hash'i aşağıdaki ile karşılaştırın:
+
+```
+0f2fe33f4d8678a89596b1fe9a5d99bd7cbdc59e7cca7c4ee8b31f57827e9ea1
+```
+
+Uygunsa kurun:
+
+```bash
+bash flop-miner.sh install
+```
+
+> `curl | bash` bilerek kullanılmıyor. Kripto tarafında "gördüğün script'i okumadan
+> çalıştır" alışkanlığını yaymak, aynı kitleye seed phrase disiplini anlatmakla çelişir.
+> Üç satır sürüyor ve doğru refleksi öğretiyor.
+
+Kurulum ~25-30 dakika. Ortada bir kez 24 kelimeniz ekrana gelir ve `evet` yazmanız istenir.
+**O kelimeleri kâğıda yazın.** Hiçbir sohbete, mesaja, nota veya yapay zekâya yapıştırmayın.
+
+Kurulum uzun sürdüğü için `screen` içinde çalıştırın; SSH koparsa kurulum devam eder:
+
+```bash
+apt-get install -y screen && screen -S flop
+```
 
 ---
 
@@ -200,8 +257,6 @@ otomatik çekiyor.
 İngilizce ve Türkçe: [flop-miner-setup](https://github.com/UfukNode/flop-miner-setup).
 Bu repo onun yerine geçmiyor; o rehberin otomasyonu.
 
-Validator kurulumu için [@mztacat](https://x.com/mztacat)'in
-[rehberi](https://github.com/mztacat/Flop-Setup-Validator-and-GPU-Miner).
 
 **Kapsam dışı:** hybrid miner, controller upgrade, çoklu GPU, validator. Araç tek GPU
 modelinde (RTX 5060 Ti 16 GB) test edildi.
