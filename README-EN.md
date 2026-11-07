@@ -23,7 +23,7 @@ By [@KriptoliaTR](https://x.com/KriptoliaTR) · [Türkçe](README.md)
 
 | Mode | What it is for |
 |---|---|
-| `check` | **Run this before you rent a machine.** Checks GPU, driver, free VRAM, Docker, disk and the sponsor service. |
+| `check` | Run this after renting, **before you start the install.** Checks GPU, driver, free VRAM, Docker, disk and the sponsor service. You find out in 10 seconds that a machine is unusable, not an hour into the install. |
 | `install` | Full install from scratch. If the sponsor queue is full it **does not stop**: it moves the wait to the background and finishes everything else. |
 | `restore` | Your machine died? Brings the same account up on a new one. **Skips** the sponsor step. |
 | `watch` | Catches a changed tunnel address or a dead worker and fixes it. |
@@ -154,7 +154,7 @@ bash flop-miner.sh check
 Compare the hash with:
 
 ```
-0f2fe33f4d8678a89596b1fe9a5d99bd7cbdc59e7cca7c4ee8b31f57827e9ea1
+92e66ea18ab2b7b5a9cf8e678d4c17778cf9db0aa162506eb09fa79c0f73be36
 ```
 
 If the machine passes, install:

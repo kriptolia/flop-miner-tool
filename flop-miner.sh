@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # FLOP Devnet GPU miner kurulumu — KriptoliaTR
 #
-#   bash flop-miner.sh check    → on kontrol (MAKINE KIRALAMADAN ONCE calistirin)
+#   bash flop-miner.sh check    → on kontrol (KURULUMA BASLAMADAN ONCE calistirin)
 #   bash flop-miner.sh install  → tam kurulum
 #   bash flop-miner.sh status   → mevcut kurulumun durumu
 #   bash flop-miner.sh restore  → mevcut anahtarla YENI makineye tasima
@@ -91,7 +91,7 @@ preflight() {
   code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$SPONSOR_URL/chain" 2>/dev/null) || code=000
   case "$code" in
     200) ok "Servis ayakta (HTTP 200)" ;;
-    000) warn "Servise ulasilamadi. Kiralamadan once tekrar deneyin." ; fail=1 ;;
+    000) warn "Servise ulasilamadi. Birkac dakika sonra tekrar deneyin." ; fail=1 ;;
     *)   warn "Servis $code donuyor. Su an saglikli degil, kiralamayi erteleyin." ; fail=1 ;;
   esac
   printf '   Not: kuyrugun dolu olup olmadigi ancak kayit denenince belli olur.\n'
@@ -99,7 +99,10 @@ preflight() {
 
   echo
   if [ "$fail" -ne 0 ]; then
-    printf '\033[31mBu makine veya bu an uygun degil.\033[0m\n\n'
+    printf '\033[31mBu makine veya bu an uygun degil.\033[0m\n'
+    printf 'Kuruluma baslamayin. Donanim sorunuysa makineyi Destroy edip\n'
+    printf 'baska makine kiralayin; simdi birkac kurus kaybedersiniz, bir saat\n'
+    printf 'kurulumdan sonra ogrenirseniz hepsi bosa gider.\n\n'
     return 1
   fi
   printf '\033[32mUygun. Kuruluma gecebilirsiniz:\033[0m  bash %s install\n\n' "$0"
@@ -596,7 +599,7 @@ case "$MODE" in
            export FLOP_CLI; install_watch; exit 0 ;;
   install|restore) ;;
   *) printf 'Kullanim: bash %s {check|install|restore|watch|status}\n\n' "$0"
-     printf '  check    makine kiralamadan once calistirin\n'
+     printf '  check    kuruluma baslamadan once calistirin\n'
      printf '  install  sifirdan tam kurulum\n'
      printf '  restore  mevcut 24 kelimeyle yeni makineye tasima (sponsor ATLANIR)\n'
      printf '  watch    tunel/worker nobetcisi kur\n'

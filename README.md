@@ -16,7 +16,7 @@ Hazırlayan: [@KriptoliaTR](https://x.com/KriptoliaTR) · [English](README-EN.md
 
 | Mod | Ne işe yarar |
 |---|---|
-| `check` | **Makine kiralamadan önce** çalıştırın. GPU, sürücü, boş VRAM, Docker, disk ve sponsor servisini kontrol eder. |
+| `check` | Makineyi kiraladıktan sonra, **kuruluma başlamadan önce** çalıştırın. GPU, sürücü, boş VRAM, Docker, disk ve sponsor servisini kontrol eder. Makine uygunsuzsa 10 saniyede öğrenirsiniz, bir saatlik kurulumun sonunda değil. |
 | `install` | Sıfırdan tam kurulum. Sponsor kuyruğu doluysa **durmaz**; arka plana alır, kalanı bitirir. |
 | `restore` | Makineniz öldüyse: aynı 24 kelimeyle yeni makineye taşır. Sponsor adımını **atlar**. |
 | `watch` | Tünel adresi değişirse veya worker ölürse yakalayıp düzeltir. |
@@ -144,7 +144,7 @@ bash flop-miner.sh check
 Hash'i aşağıdaki ile karşılaştırın:
 
 ```
-0f2fe33f4d8678a89596b1fe9a5d99bd7cbdc59e7cca7c4ee8b31f57827e9ea1
+92e66ea18ab2b7b5a9cf8e678d4c17778cf9db0aa162506eb09fa79c0f73be36
 ```
 
 Uygunsa kurun:
